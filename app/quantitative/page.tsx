@@ -316,7 +316,7 @@ export default function QuantitativeAnalysis() {
                         <ul className="text-black dark:text-white space-y-1">
                           <li>• Compare your portfolio to the efficient frontier</li>
                           <li>• Identify opportunities to improve risk-adjusted returns</li>
-                          <li>• Understand your portfolio's risk characteristics</li>
+                          <li>• Understand your portfolio&apos;s risk characteristics</li>
                           <li>• Plan rebalancing strategies</li>
                         </ul>
                       </div>
@@ -405,7 +405,7 @@ export default function QuantitativeAnalysis() {
                           borderRadius: '8px',
                           color: '#111827'
                         }}
-                        formatter={(value: any, name: any) => [
+                        formatter={(value: number, name: string) => [
                           `${(value * 100).toFixed(2)}%`, 
                           name === 'return' ? 'Expected Return' : 'Risk'
                         ]}
@@ -547,7 +547,7 @@ export default function QuantitativeAnalysis() {
                           borderRadius: '8px',
                           color: '#111827'
                         }}
-                        formatter={(value: any) => [`${(value * 100).toFixed(1)}%`, 'Risk Contribution']}
+                        formatter={(value: number) => [`${(value * 100).toFixed(1)}%`, 'Risk Contribution']}
                       />
                       <Bar dataKey="value" fill="#0a0a0a" />
                     </BarChart>
@@ -562,10 +562,36 @@ export default function QuantitativeAnalysis() {
             {/* Description Card */}
             <Card className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-purple-200 dark:border-purple-800">
               <CardContent className="pt-6">
+              <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <Activity className="w-5 h-5 text-purple-600" />
+                    <h3 className="font-semibold text-black dark:text-white">Monte Carlo Simulation</h3>
+                  </div>
+                  <Button
+                    onClick={() => toggleSection('var')}
+                    variant="ghost"
+                    size="sm"
+                    className="text-black dark:text-white hover:bg-red-100 dark:hover:bg-red-900/30"
+                  >
+                    {expandedSections.var ? (
+                      <>
+                        <span className="hidden sm:inline mr-2">Show Less</span>
+                        <ChevronUp className="w-4 h-4" />
+                      </>
+                    ) : (
+                      <>
+                        <span className="hidden sm:inline mr-2">Know More</span>
+                        <ChevronDown className="w-4 h-4" />
+                      </>
+                    )}
+                  </Button>
+                </div>
+                
+                {expandedSections.var && (
                 <div className="flex items-start space-x-3">
-                  <Activity className="w-5 h-5 text-purple-600 mt-0.5" />
+                  {/* <Activity className="w-5 h-5 text-purple-600 mt-0.5" /> */}
                   <div>
-                    <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">Monte Carlo Simulation</h3>
+                    {/* <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">Monte Carlo Simulation</h3> */}
                     <p className="text-purple-800 dark:text-purple-200 text-sm leading-relaxed">
                       Monte Carlo simulation is a powerful computational technique that uses random sampling to model the probability 
                       of different outcomes. By running thousands of scenarios with varying market conditions, it provides a comprehensive 
@@ -593,6 +619,7 @@ export default function QuantitativeAnalysis() {
                     </div>
                   </div>
                 </div>
+                )}
               </CardContent>
             </Card>
 
@@ -662,7 +689,7 @@ export default function QuantitativeAnalysis() {
                           borderRadius: '8px',
                           color: '#111827'
                         }}
-                        formatter={(value: any) => [formatCurrency(value), 'Portfolio Value']}
+                        formatter={(value: number) => [formatCurrency(value), 'Portfolio Value']}
                       />
                       <Area type="monotone" dataKey="value" stroke="#0a0a0a" fill="#0a0a0a" fillOpacity={0.3} />
                     </AreaChart>
@@ -677,10 +704,36 @@ export default function QuantitativeAnalysis() {
             {/* Description Card */}
             <Card className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-200 dark:border-green-800">
               <CardContent className="pt-6">
+              <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <Brain className="w-5 h-5 text-green-600" />
+                    <h3 className="font-semibold text-black dark:text-white">Machine Learning</h3>
+                  </div>
+                  <Button
+                    onClick={() => toggleSection('var')}
+                    variant="ghost"
+                    size="sm"
+                    className="text-black dark:text-white hover:bg-red-100 dark:hover:bg-red-900/30"
+                  >
+                    {expandedSections.var ? (
+                      <>
+                        <span className="hidden sm:inline mr-2">Show Less</span>
+                        <ChevronUp className="w-4 h-4" />
+                      </>
+                    ) : (
+                      <>
+                        <span className="hidden sm:inline mr-2">Know More</span>
+                        <ChevronDown className="w-4 h-4" />
+                      </>
+                    )}
+                  </Button>
+                </div>
+                
+                {expandedSections.var && (
                 <div className="flex items-start space-x-3">
-                  <Brain className="w-5 h-5 text-green-600 mt-0.5" />
+                  {/* <Brain className="w-5 h-5 text-green-600 mt-0.5" /> */}
                   <div>
-                    <h3 className="font-semibold text-green-900 dark:text-green-100 mb-2">Machine Learning Insights</h3>
+                    {/* <h3 className="font-semibold text-green-900 dark:text-green-100 mb-2">Machine Learning Insights</h3> */}
                     <p className="text-green-800 dark:text-green-200 text-sm leading-relaxed">
                       Our advanced machine learning algorithms analyze your portfolio characteristics to provide personalized insights 
                       about your investment personality, risk preferences, and behavioral patterns. These AI-powered recommendations 
@@ -708,6 +761,7 @@ export default function QuantitativeAnalysis() {
                     </div>
                   </div>
                 </div>
+                )}
               </CardContent>
             </Card>
 
@@ -822,7 +876,7 @@ export default function QuantitativeAnalysis() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {recommendations.map((rec, index) => (
+                                      {recommendations.map((rec, index) => (
                     <motion.div
                       key={rec.id}
                       initial={{ opacity: 0, y: 20 }}
@@ -885,10 +939,36 @@ export default function QuantitativeAnalysis() {
             {/* Description Card */}
             <Card className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 border-amber-200 dark:border-amber-800">
               <CardContent className="pt-6">
+              <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <PieChart className="w-5 h-5 text-amber-600" />
+                    <h3 className="font-semibold text-black dark:text-white">Correlation Analysis</h3>
+                  </div>
+                  <Button
+                    onClick={() => toggleSection('var')}
+                    variant="ghost"
+                    size="sm"
+                    className="text-black dark:text-white hover:bg-red-100 dark:hover:bg-red-900/30"
+                  >
+                    {expandedSections.var ? (
+                      <>
+                        <span className="hidden sm:inline mr-2">Show Less</span>
+                        <ChevronUp className="w-4 h-4" />
+                      </>
+                    ) : (
+                      <>
+                        <span className="hidden sm:inline mr-2">Know More</span>
+                        <ChevronDown className="w-4 h-4" />
+                      </>
+                    )}
+                  </Button>
+                </div>
+                
+                {expandedSections.var && (
                 <div className="flex items-start space-x-3">
-                  <PieChart className="w-5 h-5 text-amber-600 mt-0.5" />
+                  {/* <PieChart className="w-5 h-5 text-amber-600 mt-0.5" /> */}
                   <div>
-                    <h3 className="font-semibold text-amber-900 dark:text-amber-100 mb-2">Correlation Analysis</h3>
+                    {/* <h3 className="font-semibold text-amber-900 dark:text-amber-100 mb-2">Correlation Analysis</h3> */}
                     <p className="text-amber-800 dark:text-amber-200 text-sm leading-relaxed">
                       Correlation analysis measures how different stocks in your portfolio move together. Understanding these relationships 
                       is crucial for effective diversification. Stocks with high correlation provide less diversification benefits, 
@@ -916,6 +996,7 @@ export default function QuantitativeAnalysis() {
                     </div>
                   </div>
                 </div>
+                )}
               </CardContent>
             </Card>
 

@@ -63,9 +63,9 @@ export default function SignupPage() {
       } else {
         setShowSuccessDialog(true)
       }
-    } catch (err) {
-      setError('An unexpected error occurred. Please try again.')
-    } finally {
+          } catch {
+        setError('An unexpected error occurred. Please try again.')
+      } finally {
       setIsLoading(false)
     }
   }

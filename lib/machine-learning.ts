@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { type Holding } from './risk-calculations'
 import { type PortfolioMetrics } from './quantitative-models'
 
@@ -464,7 +465,7 @@ function kMeansClustering(data: number[][], k: number): number[][] {
   // In production, use a proper ML library like TensorFlow.js or ml-matrix
   
   // Initialize centroids randomly
-  const centroids = []
+  const centroids: number[][] = []
   for (let i = 0; i < k; i++) {
     const centroid = data[0].map(() => Math.random())
     centroids.push(centroid)
@@ -477,7 +478,7 @@ function kMeansClustering(data: number[][], k: number): number[][] {
     let minDistance = Infinity
     let bestCluster = 0
     
-    centroids.forEach((centroid, clusterIndex) => {
+    centroids.forEach((centroid: number[], clusterIndex: number) => {
       const distance = euclideanDistance(point, centroid)
       if (distance < minDistance) {
         minDistance = distance

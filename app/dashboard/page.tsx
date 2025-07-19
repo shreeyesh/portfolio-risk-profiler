@@ -67,7 +67,7 @@ export default function Dashboard() {
   const [sectorAllocation, setSectorAllocation] = useState(calculateSectorAllocation(mockHoldings))
   const [recommendations, setRecommendations] = useState(getRecommendations(riskScore, holdings))
   const [isLoading, setIsLoading] = useState(false)
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<{ id: string; email: string } | null>(null)
   const [mounted, setMounted] = useState(false)
   const [isConnecting, setIsConnecting] = useState(false)
   const [connectedProviders, setConnectedProviders] = useState<{zerodha: boolean, robinhood: boolean}>({
@@ -85,7 +85,7 @@ export default function Dashboard() {
       if (!user) {
         router.push('/login')
       } else {
-        setUser(user)
+        setUser(user.email ? { id: user.id, email: user.email } : null)
         // Check if user has connected providers
         const { data: connections } = await supabase
           .from('api_connections')
@@ -207,6 +207,7 @@ export default function Dashboard() {
   }
 
   const disconnectProvider = async (provider: 'zerodha' | 'robinhood') => {
+    if (!user) return;
     try {
       await supabase
         .from('api_connections')
@@ -338,11 +339,11 @@ export default function Dashboard() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 {/* Zerodha Connection */}
-                <div className="flex items-center justify-between p-4 border border-neutral-200 dark:border-neutral-700 rounded-lg">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 sm:p-6 border border-neutral-200 dark:border-neutral-700 rounded-lg gap-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
                       <span className="text-white font-bold text-sm">Z</span>
                     </div>
                     <div>
@@ -350,7 +351,7 @@ export default function Dashboard() {
                       <p className="text-sm text-neutral-600 dark:text-neutral-400">Indian Markets</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 sm:space-x-3">
                     {connectedProviders.zerodha ? (
                       <>
                         <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 border-0">
@@ -380,9 +381,9 @@ export default function Dashboard() {
                 </div>
 
                 {/* Robinhood Connection */}
-                <div className="flex items-center justify-between p-4 border border-neutral-200 dark:border-neutral-700 rounded-lg">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 sm:p-6 border border-neutral-200 dark:border-neutral-700 rounded-lg gap-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
                       <span className="text-white font-bold text-sm">R</span>
                     </div>
                     <div>
@@ -390,7 +391,7 @@ export default function Dashboard() {
                       <p className="text-sm text-neutral-600 dark:text-neutral-400">US Markets</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 sm:space-x-3">
                     {connectedProviders.robinhood ? (
                       <>
                         <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 border-0">
@@ -618,29 +619,30 @@ export default function Dashboard() {
                 <div className="space-y-4">
                   {holdings
                     .sort((a, b) => b.total_value - a.total_value)
-                    .map((holding, index) => {
+                    .map((holding) => {
                       const percentage = (holding.total_value / totalValue) * 100
                       const isHighRisk = percentage > 10
                       
                       return (
-                        <div key={holding.symbol} className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
-                          <div className="flex items-center space-x-4">
-                            <div className="w-10 h-10 bg-black dark:bg-white rounded-lg flex items-center justify-center">
-                              <span className="text-white dark:text-black font-bold">{holding.symbol[0]}</span>
+                        <div key={holding.symbol} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg gap-3">
+                          <div className="flex items-center space-x-3 sm:space-x-4">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-black dark:bg-white rounded-lg flex items-center justify-center flex-shrink-0">
+                              <span className="text-white dark:text-black font-bold text-sm sm:text-base">{holding.symbol[0]}</span>
                             </div>
-                            <div>
-                              <h3 className="font-medium text-black dark:text-white">{holding.symbol}</h3>
-                              <p className="text-sm text-neutral-600 dark:text-neutral-400">{holding.name}</p>
+                            <div className="min-w-0 flex-1">
+                              <h3 className="font-medium text-black dark:text-white text-sm sm:text-base">{holding.symbol}</h3>
+                              <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 truncate">{holding.name}</p>
                               <p className="text-xs text-neutral-500 dark:text-neutral-500">{holding.sector}</p>
                             </div>
                           </div>
-                          <div className="text-right">
-                            <div className="font-medium text-black dark:text-white">{formatCurrency(holding.total_value)}</div>
-                            <div className="text-sm text-neutral-600 dark:text-neutral-400">{percentage.toFixed(1)}%</div>
+                          <div className="flex flex-col sm:text-right gap-1">
+                            <div className="font-medium text-black dark:text-white text-sm sm:text-base">{formatCurrency(holding.total_value)}</div>
+                            <div className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">{percentage.toFixed(1)}%</div>
                             {isHighRisk && (
-                              <Badge variant="destructive" className="mt-1">
+                              <Badge variant="destructive" className="mt-1 text-xs px-2 py-1 w-fit">
                                 <AlertTriangle className="w-3 h-3 mr-1" />
-                                High Concentration
+                                <span className="hidden sm:inline">High Concentration</span>
+                                <span className="sm:hidden">High Risk</span>
                               </Badge>
                             )}
                           </div>

@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { 
   Shield, 
   Settings, 
-  Link, 
+  Link as LinkIcon, 
   Unlink, 
   CheckCircle, 
   AlertTriangle,
@@ -26,7 +26,7 @@ import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
 export default function SettingsPage() {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<{ id: string; email: string } | null>(null)
   const [zerodhaConnected, setZerodhaConnected] = useState(false)
   const [robinhoodConnected, setRobinhoodConnected] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -38,7 +38,7 @@ export default function SettingsPage() {
       if (!user) {
         router.push('/login')
       } else {
-        setUser(user)
+        setUser(user.email ? { id: user.id, email: user.email } : null)
         // Check existing connections
         await checkConnections()
       }
@@ -63,6 +63,7 @@ export default function SettingsPage() {
   }
 
   const connectZerodha = async () => {
+    if (!user) return;
     setIsLoading(true)
     try {
       // In a real implementation, this would redirect to Zerodha's OAuth
@@ -91,6 +92,7 @@ export default function SettingsPage() {
   }
 
   const connectRobinhood = async () => {
+    if (!user) return;
     setIsLoading(true)
     try {
       // In a real implementation, this would redirect to Robinhood's OAuth
@@ -120,6 +122,7 @@ export default function SettingsPage() {
 
   const disconnectAccount = async (platform: string) => {
     try {
+      if (!user) return;
       const { error } = await supabase
         .from('api_connections')
         .delete()
@@ -222,7 +225,7 @@ export default function SettingsPage() {
                           disabled={isLoading}
                           className="bg-orange-500 hover:bg-orange-600"
                         >
-                          <Link className="w-4 h-4 mr-2" />
+                          <LinkIcon className="w-4 h-4 mr-2" />
                           {isLoading ? 'Connecting...' : 'Connect'}
                         </Button>
                       )}
@@ -263,7 +266,7 @@ export default function SettingsPage() {
                           disabled={isLoading}
                           className="bg-green-500 hover:bg-green-600"
                         >
-                          <Link className="w-4 h-4 mr-2" />
+                          <LinkIcon className="w-4 h-4 mr-2" />
                           {isLoading ? 'Connecting...' : 'Connect'}
                         </Button>
                       )}
@@ -309,7 +312,7 @@ export default function SettingsPage() {
                       <Label htmlFor="firstName">First Name</Label>
                       <Input
                         id="firstName"
-                        defaultValue={user?.user_metadata?.first_name || ''}
+                        defaultValue={user?.email || ''}
                         className="bg-white/5 border-white/20 text-white"
                       />
                     </div>
@@ -317,7 +320,7 @@ export default function SettingsPage() {
                       <Label htmlFor="lastName">Last Name</Label>
                       <Input
                         id="lastName"
-                        defaultValue={user?.user_metadata?.last_name || ''}
+                        // defaultValue={user?.email || ''}
                         className="bg-white/5 border-white/20 text-white"
                       />
                     </div>

@@ -20,7 +20,13 @@ import {
   Lock,
   Eye,
   PieChart,
-  LineChart
+  LineChart,
+  Brain,
+  Calculator,
+  BarChart,
+  ScatterChart,
+  Gauge,
+  TrendingDown
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -66,6 +72,51 @@ const testimonials = [
     role: "Chief Investment Officer",
     company: "Goldman Sachs",
     content: "The platform's ability to identify concentration risks and provide actionable recommendations is exceptional."
+  }
+]
+
+const quantitativeModels = [
+  {
+    icon: TrendingUp,
+    title: 'Modern Portfolio Theory',
+    description: 'Advanced optimization using Markowitz theory to find the efficient frontier and optimal risk-return combinations.',
+    color: 'from-blue-500 to-purple-600',
+    features: ['Efficient Frontier Analysis', 'Risk-Return Optimization', 'Portfolio Rebalancing']
+  },
+  {
+    icon: TrendingDown,
+    title: 'Value at Risk (VaR)',
+    description: 'Statistical risk measurement to quantify maximum potential losses with confidence intervals and historical simulation.',
+    color: 'from-red-500 to-orange-600',
+    features: ['95% & 99% Confidence Levels', 'Historical Simulation', 'Risk Decomposition']
+  },
+  {
+    icon: Activity,
+    title: 'Monte Carlo Simulation',
+    description: 'Computational technique using random sampling to model portfolio performance under various scenarios.',
+    color: 'from-purple-500 to-pink-600',
+    features: ['Scenario Analysis', 'Probability Modeling', 'Stress Testing']
+  },
+  {
+    icon: Brain,
+    title: 'Machine Learning Insights',
+    description: 'AI-powered analysis for personality profiling, clustering, and personalized recommendations.',
+    color: 'from-green-500 to-emerald-600',
+    features: ['Investor Profiling', 'Risk Clustering', 'Smart Recommendations']
+  },
+  {
+    icon: PieChart,
+    title: 'Correlation Analysis',
+    description: 'Comprehensive analysis of how different assets move together to optimize diversification.',
+    color: 'from-amber-500 to-yellow-600',
+    features: ['Asset Correlation', 'Diversification Metrics', 'Sector Analysis']
+  },
+  {
+    icon: BarChart,
+    title: 'Advanced Risk Metrics',
+    description: 'Professional-grade metrics including Sharpe ratio, Beta, and information ratio calculations.',
+    color: 'from-indigo-500 to-blue-600',
+    features: ['Sharpe Ratio', 'Beta Analysis', 'Information Ratio']
   }
 ]
 
@@ -236,11 +287,79 @@ export default function LandingPage() {
         </div>
       </motion.div>
 
-      {/* Testimonials Section */}
+      {/* Quantitative Analysis Models Section */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 2.2 }}
+        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20"
+      >
+        <div className="text-center mb-12 sm:mb-16">
+          <motion.div
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5, delay: 2.4 }}
+            className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/20 dark:to-blue-900/20 rounded-full px-4 py-2 mb-6"
+          >
+            <Calculator className="w-4 h-4 text-purple-600" />
+            <span className="text-sm font-medium text-purple-800 dark:text-purple-200">Advanced Analytics</span>
+          </motion.div>
+          <h2 className="text-2xl sm:text-4xl font-bold text-black dark:text-white mb-4">
+            Professional Quantitative Models
+          </h2>
+          <p className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+            Access institutional-grade financial models and advanced analytics used by top investment firms worldwide
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {quantitativeModels.map((model, index) => (
+            <motion.div
+              key={model.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 2.6 + index * 0.1 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="group"
+            >
+              <Card className="bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 hover:shadow-xl transition-all duration-300 professional-shadow overflow-hidden">
+                <div className={`h-2 bg-gradient-to-r ${model.color}`} />
+                <CardHeader className="pb-4">
+                  <div className={`w-12 h-12 bg-gradient-to-r ${model.color} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <model.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <CardTitle className="text-xl text-black dark:text-white">{model.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <CardDescription className="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed">
+                    {model.description}
+                  </CardDescription>
+                  <div className="space-y-2">
+                    {model.features.map((feature, featureIndex) => (
+                      <motion.div
+                        key={feature}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: 2.8 + index * 0.1 + featureIndex * 0.05 }}
+                        className="flex items-center space-x-2"
+                      >
+                        <div className={`w-2 h-2 bg-gradient-to-r ${model.color} rounded-full`} />
+                        <span className="text-xs text-neutral-600 dark:text-neutral-400">{feature}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Testimonials Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 3.2 }}
         className="relative z-10 max-w-7xl mx-auto px-6 py-20"
       >
         <div className="text-center mb-16">
@@ -273,7 +392,7 @@ export default function LandingPage() {
                       <div className="text-sm text-neutral-600 dark:text-neutral-400">{testimonial.role}, {testimonial.company}</div>
                     </div>
                   </div>
-                  <p className="text-neutral-600 dark:text-neutral-400 italic">"{testimonial.content}"</p>
+                  <p className="text-neutral-600 dark:text-neutral-400 italic">&ldquo;{testimonial.content}&rdquo;</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -285,7 +404,7 @@ export default function LandingPage() {
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 2.6 }}
+        transition={{ duration: 0.8, delay: 3.6 }}
         className="relative z-10 max-w-4xl mx-auto px-6 py-20 text-center"
       >
         <Card className="bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 professional-shadow">
@@ -293,7 +412,7 @@ export default function LandingPage() {
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 0.5, delay: 2.8 }}
+              transition={{ duration: 0.5, delay: 3.8 }}
               className="w-16 h-16 bg-black dark:bg-white rounded-full flex items-center justify-center mx-auto mb-6"
             >
               <Lock className="w-8 h-8 text-white dark:text-black" />
@@ -329,7 +448,7 @@ export default function LandingPage() {
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 3 }}
+        transition={{ duration: 0.8, delay: 4 }}
         className="relative z-10 max-w-4xl mx-auto px-6 py-20 text-center"
       >
         <Card className="bg-black dark:bg-white text-white dark:text-black professional-shadow">
@@ -337,7 +456,7 @@ export default function LandingPage() {
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 0.5, delay: 3.2 }}
+              transition={{ duration: 0.5, delay: 4.2 }}
               className="w-16 h-16 bg-white dark:bg-black rounded-full flex items-center justify-center mx-auto mb-6"
             >
               <Target className="w-8 h-8 text-black dark:text-white" />
@@ -364,7 +483,7 @@ export default function LandingPage() {
       <motion.footer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 3.4 }}
+        transition={{ duration: 0.8, delay: 4.4 }}
         className="relative z-10 border-t border-neutral-200 dark:border-neutral-800 mt-20"
       >
         <div className="max-w-7xl mx-auto px-6 py-12">

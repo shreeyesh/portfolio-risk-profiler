@@ -159,3 +159,33 @@
     @apply shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.3)];
   }
 }
+
+/* Cursor styles for interactive elements */
+@layer base {
+  button, 
+  [role="button"],
+  .btn,
+  .cursor-pointer {
+    cursor: pointer !important;
+  }
+
+  /* Ensure all clickable elements show pointer cursor */
+  a,
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  select,
+  summary {
+    cursor: pointer;
+  }
+
+  /* Disable pointer for disabled elements */
+  button:disabled,
+  [role="button"]:disabled,
+  input:disabled,
+  select:disabled {
+    cursor: not-allowed !important;
+  }
+}
